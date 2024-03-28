@@ -1,0 +1,1 @@
+Hi {username},\nYou have been added to the Toan Nguyen organization by the admin. Please follow these easy steps to Sign up:\n<ul>\n<li>Click on this <a href=\"http://localhost:3000/auth/signup/{username}/{####}\">link</a></li>\n<li>Enter your email</li>\n</ul>

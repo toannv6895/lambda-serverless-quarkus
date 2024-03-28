@@ -1,0 +1,76 @@
+---
+
+  - name: Create environment directory if it does not exist
+    ansible.builtin.file:
+      path: ../../environments/{{ env }}
+      state: directory  
+
+  - name: Copy environment template file
+    ansible.builtin.template:
+      src: ../roles/scaffold_environment/templates/env.j2
+      dest: ../../environments/{{ env }}/env.hcl       
+
+  - name: Remove region directory if it exists
+    ansible.builtin.file:
+      path: ../../environments/{{ env }}/{{ region }}
+      state: absent
+
+  - name: Create region directory if it does not exist
+    ansible.builtin.file:
+      path: ../../environments/{{ env }}/{{ region }}
+      state: directory   
+
+  - name: Copy region template file
+    ansible.builtin.template:
+      src: ../roles/scaffold_environment/templates/region.j2
+      dest: ../../environments/{{ env }}/{{ region }}/region.hcl   
+
+  - name: Create amplify directory if it does not exist
+    ansible.builtin.file:
+      path: ../../environments/{{ env }}/{{ region }}/amplify
+      state: directory          
+
+  - name: Copy amplify terragrunt hcl file
+    ansible.builtin.template:
+      src: ../roles/scaffold_environment/files/amplify_terragrunt.hcl
+      dest: ../../environments/{{ env }}/{{ region }}/amplify/terragrunt.hcl 
+
+  - name: Create apigateway directory if it does not exist
+    ansible.builtin.file:
+      path: ../../environments/{{ env }}/{{ region }}/apigateway
+      state: directory          
+
+  - name: Copy network terragrunt hcl file
+    ansible.builtin.template:
+      src: ../roles/scaffold_environment/files/apigateway_terragrunt.hcl
+      dest: ../../environments/{{ env }}/{{ region }}/apigateway/terragrunt.hcl  
+
+  - name: Create cognito directory if it does not exist
+    ansible.builtin.file:
+      path: ../../environments/{{ env }}/{{ region }}/cognito
+      state: directory          
+
+  - name: Copy cognito terragrunt hcl file
+    ansible.builtin.template:
+      src: ../roles/scaffold_environment/files/cognito_terragrunt.hcl
+      dest: ../../environments/{{ env }}/{{ region }}/cognito/terragrunt.hcl        
+
+  - name: Create lambda directory if it does not exist
+    ansible.builtin.file:
+      path: ../../environments/{{ env }}/{{ region }}/lambda
+      state: directory          
+
+  - name: Copy lambda terragrunt hcl file
+    ansible.builtin.template:
+      src: ../roles/scaffold_environment/files/lambda_terragrunt.hcl
+      dest: ../../environments/{{ env }}/{{ region }}/lambda/terragrunt.hcl   
+
+  - name: Create s3 directory if it does not exist
+    ansible.builtin.file:
+      path: ../../environments/{{ env }}/{{ region }}/s3
+      state: directory          
+
+  - name: Copy s3 terragrunt hcl file
+    ansible.builtin.template:
+      src: ../roles/scaffold_environment/files/s3_terragrunt.hcl
+      dest: ../../environments/{{ env }}/{{ region }}/s3/terragrunt.hcl   

@@ -1,0 +1,9 @@
+---
+  - name: "Building out the environment"
+    hosts: localhost
+    connection: local
+    vars:
+      env: "{{ env }}"
+      region: "{{ region }}"
+    roles:
+      - ../roles/scaffold_environment
