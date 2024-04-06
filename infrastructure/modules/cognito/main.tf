@@ -1,6 +1,6 @@
-data "aws_ses_email_identity" "ses_default_email_identity" {
-  email = var.default_email
-}
+# data "aws_ses_email_identity" "ses_default_email_identity" {
+#   email = var.default_email
+# }
 
 resource "aws_cognito_user_pool" "user-pool" {
   alias_attributes           = ["email"]
@@ -36,14 +36,14 @@ resource "aws_cognito_user_pool" "user-pool" {
   }
   email_configuration {
     configuration_set      = null
-    email_sending_account  = "DEVELOPER"
-    from_email_address     = "Support <${var.default_email}>"
+    email_sending_account  = null #"DEVELOPER"
+    from_email_address     = null #"Support <${var.default_email}>"
     reply_to_email_address = null
-    source_arn             = data.aws_ses_email_identity.ses_default_email_identity.arn
+    source_arn             = null #data.aws_ses_email_identity.ses_default_email_identity != null ? data.aws_ses_email_identity.ses_default_email_identity.arn : null
   }
   lambda_config {
     create_auth_challenge          = null
-    custom_message                 = module.email-configuration.lambda_function_arn
+    custom_message                 = null
     define_auth_challenge          = null
     kms_key_id                     = null
     post_authentication            = null
@@ -109,15 +109,6 @@ resource "aws_cognito_user_pool" "user-pool" {
   }
 }
 
-resource "aws_lambda_permission" "allow_permissions_to_invoke_lambda_from_cognito" {
-  statement_id  = "CustomMessage_${aws_cognito_user_pool.user-pool.id}"
-  action        = "lambda:InvokeFunction"
-  function_name = module.email-configuration.lambda_function_name
-  principal     = "cognito-idp.amazonaws.com"
-  source_arn    = aws_cognito_user_pool.user-pool.arn
-  depends_on    = [aws_cognito_user_pool.user-pool, module.email-configuration.lambda_function_name]
-}
-
 # Create groups
 resource "aws_cognito_user_group" "group" {
   for_each     = var.groups
@@ -133,7 +124,6 @@ resource "aws_cognito_user" "user" {
   password                 = each.value["password"]
   attributes               = each.value["attributes"]
   desired_delivery_mediums = each.value["desired_delivery_mediums"]
-  depends_on               = [aws_lambda_permission.allow_permissions_to_invoke_lambda_from_cognito]
 }
 
 # Add user to group

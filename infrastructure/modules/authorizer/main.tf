@@ -1,5 +1,9 @@
+locals {
+  lambda_authorizer_full_name = "${var.lambda_authorizer_name}-${var.stage}"
+}
+
 data "local_file" "file_authorizer" {
-  filename = "${path.root}/../src/lambda-authorizer/target/lambda/access-token-authorizer/bootstrap.zip"
+  filename = "${path.module}/files/access-token-authorizer.zip"
 }
 
 resource "aws_lambda_function" "lambda-authorizer" {
@@ -7,7 +11,7 @@ resource "aws_lambda_function" "lambda-authorizer" {
   code_signing_config_arn        = null
   description                    = null
   filename                       = data.local_file.file_authorizer.filename
-  function_name                  = var.lambda_authorizer_name
+  function_name                  = local.lambda_authorizer_full_name
   handler                        = var.lambda_authorizer_handler
   image_uri                      = null
   kms_key_arn                    = null
@@ -22,7 +26,7 @@ resource "aws_lambda_function" "lambda-authorizer" {
   s3_key                         = null
   s3_object_version              = null
   skip_destroy                   = false
-  source_code_hash               = data.local_file.file_authorizer.output_base64sha256
+  source_code_hash               = data.local_file.file_authorizer.content_base64sha256
   tags                           = {}
   tags_all                       = {}
   timeout                        = 3
@@ -42,7 +46,7 @@ resource "aws_lambda_function" "lambda-authorizer" {
   logging_config {
     application_log_level = var.lambda_service_log_level
     log_format            = var.lambda_service_log_format
-    log_group             = "/aws/lambda/${var.lambda_authorizer_name}"
+    log_group             = "/aws/lambda/${local.lambda_authorizer_full_name}"
     system_log_level      = null
   }
   tracing_config {

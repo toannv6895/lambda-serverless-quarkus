@@ -7,3 +7,6 @@
 [submodule "src/lambda-authorizer"]
 	path = src/lambda-authorizer
 	url = https://github.com/toannv6895/lambda-authorizer.git
+[submodule "src/lambda-cognito-auth"]
+	path = src/lambda-cognito-auth
+	url = https://github.com/toannv6895/lambda-cognito-auth.git

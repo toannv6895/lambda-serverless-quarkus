@@ -34,7 +34,7 @@ variable "app_log" {
 variable "lambda_role" {
   type        = string
   description = "Lambda execution role"
-  default     = "arn:aws:iam::478683517286:role/service-role/lambda-role"
+  default     = "arn:aws:iam::478683517286:role/abs-lambda-service-role"
 }
 
 variable "lambda_authorizer_name" {
@@ -70,13 +70,13 @@ variable "lambda_service_trace_mode" {
 variable "lambda_service_log_level" {
   type        = string
   description = "Lambda log level"
-  default     = "error"
+  default     = "ERROR"
 }
 
 variable "lambda_service_log_format" {
   type        = string
   description = "Lambda log format"
-  default     = "json"
+  default     = "JSON"
 }
 
 variable "lambda_service_architecture" {

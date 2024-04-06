@@ -6,35 +6,30 @@ locals {
 }
 
 terraform {
-  source = "${get_repo_root()}/modules//authorizer"
+  source = "${get_repo_root()}/infrastructure/modules/authorizer"
 }
 
 dependency "cognito" {
   config_path = "${get_terragrunt_dir()}/../cognito"
   mock_outputs = {
+    user_pool_id = "user-management-us-east-1_123456789"
+    user_pool_client_id = "123456789"
     user_pool_arn = "arn:aws:cognito-idp:us-east-1:478683517286:userpool/test"
   }
-  mock_outputs_merge_strategy_with_state = "shallow"
-  skip_outputs = true
+  mock_outputs_merge_strategy_with_state = "deep_map_only"
 }
 
 dependency "s3" {
   config_path = "${get_terragrunt_dir()}/../s3"
-  mock_outputs_merge_strategy_with_state = "shallow"
-  skip_outputs = true
-}
-
-dependencies {
-  paths = ["${get_terragrunt_dir()}/../cognito", "${get_terragrunt_dir()}/../lambda"]
-}
-
-dependencies {
-  paths = ["${get_terragrunt_dir()}/../s3", "${get_terragrunt_dir()}/../s3"]
+  mock_outputs = {
+    s3_authorizer_bucket = "user-management-authorizer-bucket"
+  }
+  mock_outputs_merge_strategy_with_state = "deep_map_only"
 }
 
 inputs = {
-  stage = local.env_vars.environment
-  region = local.region_vars.region
+  region        = local.region_vars.aws_region
+  stage         = local.env_vars.environment
   user_pool_id = dependency.cognito.outputs.user_pool_id
   user_pool_client_id = dependency.cognito.outputs.user_pool_client_id
   s3_authorizer_bucket = dependency.s3.outputs.s3_authorizer_bucket

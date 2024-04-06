@@ -13,17 +13,32 @@ variable "lambda_authorizer_invoke_arn" {
 
 variable "lambda_user_management_integration_arn" {
   type = string
-  description = "ARN of the Lambda User Management Integration"
+  description = "Invoke ARN of the Lambda User Management Integration"
 }
 
 variable "lambda_site_management_integration_arn" {
   type = string
-  description = "ARN of the Lambda Site Management Integration"
+  description = "Invoke ARN of the Lambda Site Management Integration"
+}
+
+variable "lambda_authorizer_arn" {
+  type = string
+  description = "ARN of the Lambda Authorizer Management"
+}
+
+variable "lambda_user_management_arn" {
+  type = string
+  description = "ARN of the Lambda User Management"
+}
+
+variable "lambda_site_management_arn" {
+  type = string
+  description = "ARN of the Lambda Site Management"
 }
 
 variable "api_gateway_name" {
   description = "Name of the API Gateway"
-  default     = "TerraformServerlessExample"
+  default     = "tf-api-gateway"
 }
 
 variable "api_gateway_type" {
@@ -47,3 +62,16 @@ variable "api_stage_name" {
   description = "Name of the API Gateway Stage"
   default     = "$default"
 }
+
+variable "api_lambda_principal" {
+  type = string
+  description = "Principal of the API Gateway"
+  default     = "apigateway.amazonaws.com"
+}
+
+variable "api_lambda_action" {
+  type = string
+  description = "Principal of the API Gateway"
+  default     = "lambda:InvokeFunction"
+}
+

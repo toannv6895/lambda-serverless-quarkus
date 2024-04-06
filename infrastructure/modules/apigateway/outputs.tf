@@ -1,3 +1,3 @@
-output "aws_api_gateway_deployment_url" {
-  value = aws_api_gateway_deployment.api_gateway_deployment.invoke_url
+output "aws_api_gatewayv2_deployment_id" {
+  value = aws_apigatewayv2_deployment.api_deployment.id
 }

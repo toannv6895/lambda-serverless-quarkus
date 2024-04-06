@@ -2,7 +2,7 @@ locals {
   _env_vars                = read_terragrunt_config(find_in_parent_folders("env.hcl"))
   env_vars                 = local._env_vars.locals
   stage                    = local.env_vars.environment
-  default_cognito_name     = "cognito-user-management-${local.env_vars.environment}"
+  default_cognito_name     = "cognito-user-management"
   default_groups           = ["SUPER_ADMIN", "ADMIN", "USER"]
 }
 

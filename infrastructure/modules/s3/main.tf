@@ -1,21 +1,25 @@
+locals {
+  s3_bucket_full_name = "${var.s3_bucket_name}-${var.stage}"
+}
+
 # Check s3 bucket is exists or not
 data "external" "s3_bucket-exists" {
   program = ["bash", "${path.module}/script/s3_bucket-exists.sh"]
 
   query = {
-    bucket_name = var.s3_bucket_name
+    bucket_name = local.s3_bucket_full_name
   }
 }
 
 data "aws_s3_bucket" "data-user-management-bucket" {
   count = data.external.s3_bucket-exists.result.exists == "true" ? 1 : 0
-  bucket = var.s3_bucket_name
+  bucket = local.s3_bucket_full_name
 }
 
 # Create S3 bucket
 resource "aws_s3_bucket" "user-management-bucket" {
   count = data.external.s3_bucket-exists.result.exists == "true" ? 0 : 1
-  bucket = var.s3_bucket_name
+  bucket = local.s3_bucket_full_name
 }
 
 resource "aws_s3_bucket_public_access_block" "user-management-bucket-public-access" {

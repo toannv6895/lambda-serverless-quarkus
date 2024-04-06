@@ -25,15 +25,15 @@
       src: ../roles/scaffold_environment/templates/region.j2
       dest: ../../environments/{{ env }}/{{ region }}/region.hcl   
 
-  - name: Create amplify directory if it does not exist
+  - name: Create authorizer directory if it does not exist
     ansible.builtin.file:
-      path: ../../environments/{{ env }}/{{ region }}/amplify
+      path: ../../environments/{{ env }}/{{ region }}/authorizer
       state: directory          
 
-  - name: Copy amplify terragrunt hcl file
+  - name: Copy authorizer terragrunt hcl file
     ansible.builtin.template:
-      src: ../roles/scaffold_environment/files/amplify_terragrunt.hcl
-      dest: ../../environments/{{ env }}/{{ region }}/amplify/terragrunt.hcl 
+      src: ../roles/scaffold_environment/files/authorizer_terragrunt.hcl
+      dest: ../../environments/{{ env }}/{{ region }}/authorizer/terragrunt.hcl 
 
   - name: Create apigateway directory if it does not exist
     ansible.builtin.file:

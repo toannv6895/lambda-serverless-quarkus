@@ -6,9 +6,10 @@ locals {
 }
 
 terraform {
-  source = "${get_repo_root()}/modules//s3"
+  source = "${get_repo_root()}/infrastructure/modules/s3"
 }
 
 inputs = {
-  stage = local.env_vars.environment
+  region        = local.region_vars.aws_region
+  stage         = local.env_vars.environment
 }
